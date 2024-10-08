@@ -15,7 +15,8 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        '',
+        // '',
+        'image', // Menambahkan 'image'
         'title',
         'content',
     ];

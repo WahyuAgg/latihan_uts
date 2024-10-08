@@ -13,6 +13,8 @@ use Illuminate\Http\RedirectResponse;
 //import Facade "Storage"
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\Post;
+
 class PostController extends Controller
 {
     /**
@@ -23,11 +25,12 @@ class PostController extends Controller
     public function index(): View
     {
         //get posts
-        Post::latest()->paginate(5);
+        $posts = Post::latest()->paginate(5); // Menyimpan hasil query ke variabel $posts
 
         //render view with posts
         return view('posts.index', compact('posts'));
     }
+
 
     /**
      * create
@@ -76,13 +79,15 @@ class PostController extends Controller
      * @param  mixed $id
      * @return View
      */
-    public function show(): View
+    public function show($id): View
     {
         //get post by ID
         $post = Post::findOrFail($id);
 
         //render view with post
-        return view('posts.show', ('post'));
+        // return view('posts.show', ('post'));
+        return view('posts.show', compact('post')); // Menggunakan compact
+
     }
 
     /**
@@ -97,7 +102,9 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
 
         //render view with post
-        return view('posts.edit', compact('postsss'));
+        // return view('posts.edit', compact('postsss'));
+        return view('posts.edit', compact('post')); // Menggunakan compact yang benar
+
     }
 
     /**
@@ -131,7 +138,8 @@ class PostController extends Controller
 
             //update post with new image
             $post->update([
-                'images'     => $image->hashName(),
+                // 'images'     => $image->hashName(),
+                'image' => $image->hashName(), // Menggunakan 'image' yang benar
                 'title'     => $request->title,
                 'content'   => $request->content
             ]);
@@ -165,7 +173,9 @@ class PostController extends Controller
         Storage::delete('public/po  sts/'. $post->image);
 
         //delete post
-        $post->deled();
+        // $post->deled();
+        $post->delete(); // Menggunakan delete() yang benar
+
 
         //redirect to index
         return redirect()->route('posts.index')->with(['success' => 'Data Berhasil Dihapus!']);

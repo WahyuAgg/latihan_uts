@@ -5,7 +5,7 @@ use App\Http\Controllers\PostController;
 
 //route resource
 Route::resource('/posts', PostController::class)->names([
-    'index' => 'posts.indek',
+    'index' => 'posts.index',
     'create' => 'posts.create',
     'store' => 'posts.store',
     'show' => 'posts.show',
@@ -18,3 +18,7 @@ Route::get('/secret', function(){
     return view('posts.secret');
 }
 )->name('secret');
+
+Route::get('/', function (){
+    return view('welcome');
+});
